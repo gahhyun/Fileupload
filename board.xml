@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+    <mapper namespace="com.ottt.ottt.dao.board.boardMapper">
+    	
+    	<select id="selectList" parameterType="SearchItem" resultType="ArticleDTO">
+	  		SELECT article_no, article_title, article_create_dt, user_no, hit_count
+			FROM tb_article
+			where article_index_no = '4' and
+			(article_title like concat('%', #{keyword}, '%')
+			or article_content like concat('%', #{keyword}, '%'))
+			order by article_no desc 
+			limit #{pageSize} offset #{offset} 
+    	</select>
+
+	  	<select id="selectOne" parameterType="int" resultType="ArticleDTO">
+	  		select * from tb_article
+	  		where article_no = #{article_no} 
+	  	</select>
+	  	
+	  	
+	  	<select id="count" parameterType="SearchItem" resultType="int">
+			select count(*) 
+			from tb_article 
+			where article_index_no = '4' 
+			and
+			(article_title like concat('%', #{keyword}, '%')
+			or article_content like concat('%', #{keyword}, '%')) 
+	  	</select>
+
+		<select id="selectLastArticleNo" resultType="int">
+			select max(article_no) 
+			from tb_article
+		</select>
+	
+	  	<insert id="insert" parameterType="ArticleDTO">
+	  		INSERT INTO tb_article
+			(article_index_no, article_content, article_title, article_create_dt, user_no, baseball, category, sex)
+			VALUES('4', #{article_content}, #{article_title}, now(), #{user_no}, #{baseball}, #{category}, #{sex})
+	  	</insert>    	
+	  	
+	  	<update id="update" parameterType="ArticleDTO">
+	  		update tb_article
+	  		set article_content=#{article_content}
+	  		, article_title=#{article_title}
+	  		, article_mod_dt=now()
+	  		, baseball = #{baseball}
+	  		, category=#{category}
+	  		, sex=#{sex}
+	  		where article_no = #{article_no}
+	  	</update>
+	  	
+	  	<delete id="delete" parameterType="int">
+	  		delete from tb_article
+	  		where article_no = #{article_no}
+	  	</delete>
+	  	
+    	<!-- 조회수 증가 update문 추가하기-->
+    	<update id="hitCount" parameterType="int">
+			update tb_article 
+			set hit_count = hit_count+1
+			where article_no = #{article_no}
+    	</update>
+    
+    
+    </mapper>
+    
+     
+    
