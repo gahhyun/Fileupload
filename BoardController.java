@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ottt.ottt.dao.login.LoginUserDao;
@@ -103,7 +105,7 @@ public class BoardController {
 			articleDTO.setBaseball(String.join(",", articleDTO.getBaseballArray()));
 			articleDTO.setCategory(articleDTO.getCategory());
 			articleDTO.setSex(articleDTO.getSex());
-			
+
 			try {
 	
 					if(boardService.insert(articleDTO) != 1) {
@@ -111,7 +113,11 @@ public class BoardController {
 					}
 					
 					//마지막 아티클번호 가져오는 sql 쿼리문을 추가해야함.
-					//let getArticle_no = boardService.selectLastArticleNo();
+					Integer getArticle_no = boardService.selectLastArticleNo();
+					
+					fileService.uploadFiles(articleDTO.getUpfiles(), getArticle_no);
+					
+					
 					
 					//fileService.uploadFiles(articleDTO.getUpFiles(), getArticle_no);		//null에다가 마지막 아티클넘버 가져와야함
 					
