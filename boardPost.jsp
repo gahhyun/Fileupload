@@ -58,8 +58,7 @@
 
 
 .qa-main p{
-    display: flex;
-    justify-content: flex-end;
+
     font-weight: bold;
 }
 
@@ -347,8 +346,20 @@
          <span>
          	조회수: ${articleDTO.hit_count}
          </span>
-				<input 	type="file" 			id="upFIle1" 		name="upFiles">업로드 1
-				<input 	type="file" 			id="upFile2" 		name="upFiles">업로드 2
+         
+         		<c:choose>
+         			<c:when test="${mode == 'new'}">
+							<input 	type="file" 			id="upFIle1" 		name="upfiles">업로드 1
+							<input 	type="file" 			id="upFile2" 		name="upfiles">업로드 2
+         			</c:when>
+         			<c:otherwise>
+					        <c:forEach var="file" items="${fileList}">
+					                <p>${file.file_name}</p>
+					                <p>${file.file_ext}</p>
+    								<input type="file" name="file" />업로드
+					        </c:forEach>
+         			</c:otherwise>
+         		</c:choose>
         </div>
         </form>
         

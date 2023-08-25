@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import com.ottt.ottt.dao.board.FileDaoImpl;
+import com.ottt.ottt.dto.ArticleDTO;
 import com.ottt.ottt.dto.FileDTO;
 
 @Service
@@ -92,6 +94,12 @@ public class FileServiceImpl implements FileService {
 				                }
 						}
 				}
+		}
+
+		@Override
+		public List<FileDTO> selectFileList(ArticleDTO article_no) throws Exception {
+			
+			return fileDaoImpl.selectFileList(article_no);
 		}
 
 

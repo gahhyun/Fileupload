@@ -18,6 +18,7 @@ import com.ottt.ottt.dao.login.LoginUserDao;
 import com.ottt.ottt.domain.PageResolver;
 import com.ottt.ottt.domain.SearchItem;
 import com.ottt.ottt.dto.ArticleDTO;
+import com.ottt.ottt.dto.FileDTO;
 import com.ottt.ottt.dto.UserDTO;
 import com.ottt.ottt.service.board.BoardServiceImpl;
 import com.ottt.ottt.service.board.FileServiceImpl;
@@ -68,7 +69,10 @@ public class BoardController {
 			ArticleDTO articleDTO = boardService.getArticle(article_no);
 			boardService.hitCount(article_no);
 			
+			List<FileDTO> fileList = fileService.selectFileList(articleDTO);
+			
 			m.addAttribute("articleDTO", articleDTO);
+			m.addAttribute("fileList", fileList);
 			
 			if(session.getAttribute("id") != null) {
 				UserDTO userDTO = loginUserDao.select((String) session.getAttribute("id"));
@@ -113,8 +117,7 @@ public class BoardController {
 					}
 					
 					//마지막 아티클번호 가져오는 sql 쿼리문을 추가해야함.
-					Integer getArticle_no = boardService.selectLastArticleNo();
-					
+					Integer getArticle_no = boardService.selectLastArticleNo();		
 					fileService.uploadFiles(articleDTO.getUpfiles(), getArticle_no);
 					
 					
