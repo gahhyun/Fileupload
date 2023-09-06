@@ -140,6 +140,12 @@
 					$("textarea").attr('readonly', false)
 					$("#modi").html("등록")
 					$("#del").html("취소")
+					
+					// FileDTO가 없는 경우에 업로드 입력 필드를 생성
+				        if (!$("input[name=FileDTO]").length) {
+				            form.append('<input type="file" id="upFIle1" name="upfiles">업로드 1');
+				            form.append('<input type="file" id="upFile2" name="upfiles">업로드 2');
+        }
 					return
 				}
 				
@@ -343,20 +349,32 @@
 		<div class="title-line">
        		<textarea name="article_content" ${mode=="new" ? "" : "readonly='readonly'" } placeholder="내용을 입력해주세요." style="background-color: #202020; width: 100%; height: 100%; color: #fff; border: none; outline: none;">${articleDTO.article_content}</textarea>
   		</div>
-         <span>
-         	조회수: ${articleDTO.hit_count}
-         </span>
+  			<span>
+         		조회수: ${articleDTO.hit_count}
+         		<br>
+         	</span>
+
          
-         		<c:choose>
-         			<c:when test="${mode == 'new'}">
+         		<c:choose >
+         			<c:when test="${mode =='new'}">
 							<input 	type="file" 			id="upFIle1" 		name="upfiles">업로드 1
 							<input 	type="file" 			id="upFile2" 		name="upfiles">업로드 2
          			</c:when>
          			<c:otherwise>
 					        <c:forEach var="file" items="${fileList}">
-					                <p>${file.file_name}</p>
-					                <p>${file.file_ext}</p>
-    								<input type="file" name="file" />업로드
+					                <span>${file.file_name}</span>
+									<c:url var="downloadUrl" value="/board/board/download">
+				    						<c:param name="file_no" value="${file.file_no}" />
+									</c:url>
+					                <a href="${downloadUrl}" style="width: 70px">[다운로드]</a>
+					                
+									<c:url var="deletefile" value="/board/board/deletefile">
+				    						<c:param name="file_no" value="${file.file_no}" />
+									</c:url>
+					                <a href="${deletefile}" style="width: 70px">[삭제]</a>
+					                <div>
+								        <p>${message}</p>
+								    </div>
 					        </c:forEach>
          			</c:otherwise>
          		</c:choose>
