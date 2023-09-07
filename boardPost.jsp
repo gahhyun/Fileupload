@@ -185,6 +185,8 @@
 				if(formCheck()){form.submit()}
 			})
 			
+
+			
 			let formCheck = function() {
 				let form = document.getElementById("form")
 				
@@ -203,6 +205,8 @@
 				}
 				return true
 			}
+			
+		
 		})
 	</script>
 	
@@ -351,10 +355,8 @@
   		</div>
   			<span>
          		조회수: ${articleDTO.hit_count}
-         		<br>
          	</span>
-
-         
+         	
          		<c:choose >
          			<c:when test="${mode =='new'}">
 							<input 	type="file" 			id="upFIle1" 		name="upfiles">업로드 1
@@ -378,12 +380,19 @@
 					        </c:forEach>
          			</c:otherwise>
          		</c:choose>
+  				<c:if test="${mode !='new'}">
+					<c:if test="${not empty articleDTO.prev_article_no}">
+							<a href="/ottt/board/board/read?page=1&pageSize=10&option=&keyword=&article_no=${articleDTO.prev_article_no}">이전글 | <span>${articleDTO.prev_title}</span></a>
+					</c:if>
+					<c:if test="${not empty articleDTO.next_article_no}">
+  							<a href="/ottt/board/board/read?page=1&pageSize=10&option=&keyword=&article_no=${articleDTO.next_article_no}">다음글 | <span>${articleDTO.next_title}</span></a>
+  					</c:if>
+  				</c:if>
         </div>
         </form>
         
       </div>
     </div>
-    
     
     	<!-- Modal -->
 	        <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
